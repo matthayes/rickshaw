@@ -96,7 +96,7 @@ Rickshaw.Graph.Axis.Y = function(args) {
 						.append("g")
 						.attr("class","y_label")
 						.attr("style","opacity: 0.8")
-						.attr("transform","rotate(-90) translate(0,30)")
+						.attr("transform","rotate(-90) translate(0,0)")
 							.append("text")
 							.attr("x", -7)
 							.attr("y", 0)
