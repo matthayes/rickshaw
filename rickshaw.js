@@ -1380,6 +1380,7 @@ Rickshaw.Graph.Axis.Y = function(args) {
 
 		this.graph = args.graph;
 		this.orientation = args.orientation || 'right';
+		this.label = args.label;
 
 		var pixelsPerTick = args.pixelsPerTick || 75;
 		this.ticks = args.ticks || Math.floor(this.graph.height / pixelsPerTick);
@@ -1439,8 +1440,10 @@ Rickshaw.Graph.Axis.Y = function(args) {
 		var axis = d3.svg.axis().scale(this.graph.y).orient(this.orientation);
 		axis.tickFormat( args.tickFormat || function(y) { return y } );
 
+		var berth = 0;
+
 		if (this.orientation == 'left') {
-			var berth = this.height * berthRate;
+			berth = this.height * berthRate;
 			var transform = 'translate(' + this.width + ', ' + berth + ')';
 		}
 
@@ -1453,6 +1456,25 @@ Rickshaw.Graph.Axis.Y = function(args) {
 			.attr("class", ["y_ticks", this.ticksTreatment].join(" "))
 			.attr("transform", transform)
 			.call(axis.ticks(this.ticks).tickSubdivide(0).tickSize(this.tickSize))
+
+		if (this.label)
+		{
+			var transformHeight = this.height/2 + berth;
+			this.vis
+				.append("svg:g")
+					.attr("style","opacity: 1; ")
+					.attr("transform", "translate(0," + transformHeight + ")")
+						.append("g")
+						.attr("class","y_label")
+						.attr("style","opacity: 0.8")
+						.attr("transform","rotate(-90) translate(0,30)")
+							.append("text")
+							.attr("x", -7)
+							.attr("y", 0)
+							.attr("dy", "1em")    
+							.attr("text-anchor", "middle")      
+							.text(this.label);
+		}
 
 		var gridSize = (this.orientation == 'right' ? 1 : -1) * this.graph.width;
 
